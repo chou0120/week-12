@@ -1,24 +1,28 @@
 <template>
   <div id="app">
     <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/signin">SignIn</router-link> |
-      <router-link to="/signup">SignUp</router-link> |
-      <router-link to="/dashboard">Dashboard</router-link> |
-    </div>
+      <router-link to="/">Home</router-link> 
+      <router-link v-if="!auth" to="/signin">SignIn</router-link> 
+      <router-link v-if="!auth" to="/signup">SignUp</router-link> 
+      <router-link v-if="auth" to="/dashboard">Dashboard</router-link> 
+      <a v-if="auth" class="logout" @click="logout">Logout</a>    
+      </div>
     <div v-if="error" @click="clearError" class="error">{{ error }}</div>
     <router-view />
   </div>
 </template>
 <script>
-import { mapState, mapActions } from "vuex";
+import { mapState, mapActions, mapGetters } from "vuex";
 
 export default {
   computed:{
-    ...mapState(["error"])
+    ...mapState(["error"]),
+    ...mapGetters({
+      auth: "isAuthenticated"
+    })
   },
   methods: {
-    ...mapActions(["clearError"])
+    ...mapActions(["clearError", "logout"])
   }
 }
 </script>
