@@ -1,11 +1,42 @@
 <template>
-  <div class="home">
-    <p>Please sign up if you are not a user. If you already have an account </p>
+  <div>
+    <p>{{ user.name }}</p>
+    <p>{{ user.email }}</p>
+    <form @submit.prevent ='submitForm'>
+      <label for="name">Edit your name</label>
+      <input type="text" id="name" v-model="user.name"/>
+      <br />
+      <input type="submit" value="submit"/>
+      </form>
   </div>
 </template>
 
-<<script>
+<script>
+import { mapActions, mapGetters } from "vuex"
 export default {
-  
+  computed: {
+    ...mapGetters({
+ userData:"getUser"
+    }),
+    user(){
+      return !this.userData ? false : this.userData
+    }
+  },
+  created(){
+    this.getUserData();
+
+  },
+  methods: {
+    ...mapActions(["fetchUser", "updateUser"]),
+    getUserData(){
+
+    let userEmail = localStorage.getItem("userEmail")
+    this.fetchUser(userEmail)
+    }
+  },
+  submitForm(){
+    this.updateUser();
+  }
+
 }
 </script>

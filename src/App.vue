@@ -22,8 +22,11 @@ export default {
     })
   },
   methods: {
-    ...mapActions(["clearError", "logout"])
-  }
+    ...mapActions(["clearError", "logout", "autologin"])
+  },
+  created(){
+    this.autologin();
+  },
 }
 </script>
 <style>
